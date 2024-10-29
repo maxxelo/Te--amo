@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQat-G90nrxMfauMdZ9zyIyCmWl4JrSfsSWEDretryoDzRebFmtqPa_23E8NGDRSumMdQQ&usqp=CAU') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        .message {
+            text-align: center;
+            z-index: 1;
+            animation: fadeIn 2s ease-in-out;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .message h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .message p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .reveal-button, .reset-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #f9748f;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        .reveal-button:hover, .reset-button:hover {
+            background-color: #ffe0e5;
+        }
+
+        .heart, .confetti {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .heart {
+            font-size: 2em;
+            color: #ff5e78;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .confetti {
+            width: 10px;
+            height: 10px;
+            background: #ffd700;
+            animation: fall 3s ease-in-out infinite;
+        }
+
+        .confetti:nth-child(odd) {
+            background: #ff69b4;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { bottom: -50px; opacity: 0; transform: scale(0.5) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1) rotate(20deg); }
+            100% { bottom: 100vh; opacity: 0; transform: scale(0.5) rotate(-20deg); }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-200px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(5px, -5px); }
+            50% { transform: translate(-5px, 5px); }
+            75% { transform: translate(5px, 5px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1 id="title">Para Ti, Mi Amor ❤️</h1>
+        <p>Eres lo mejor que me ha pasado, y cada día a tu lado es un regalo.</p>
+        <button class="reveal-button" onclick="startInfiniteMessages()">Abrir Sorpresa</button>
+        <button class="reset-button" onclick="location.reload()">Reiniciar</button>
+    </div>
+
+    <script>
+        let messageInterval;
+        let heartInterval;
+        let extraMessages = [
+            "Gracias por hacerme tan feliz. ❤️",
+            "Eres mi persona favorita en este mundo. 💖",
+            "Cada momento contigo es especial. 🌹",
+            "Mi corazón es completamente tuyo. 💌",
+            "Siempre serás mi mejor elección. 🌟",
+            "No cambiaría ni un segundo a tu lado. 💞",
+            "Me haces querer ser mejor cada día. 🌷",
+            "Eres mi inspiración y mi paz. 🌈",
+            "Contigo, soy quien siempre quise ser. 💕"
+        ];
+
+        function startInfiniteMessages() {
+            const button = document.querySelector(".reveal-button");
+            button.style.display = 'none'; // Oculta el botón
+
+            launchConfetti();
+            showFloatingHearts(); // Llama a la función que muestra corazones
+            shakeElements();
+
+            showExtraMessage();
+            // Mostrar mensajes infinitos cada 3 segundos
+            messageInterval = setInterval(showExtraMessage, 3000);
+        }
+
+        function showExtraMessage() {
+            const message = document.querySelector(".message");
+
+            if (extraMessages.length === 0) {
+                // Mensaje único final cuando se acaban los mensajes
+                const finalMessage = "Tú eres mi amor eterno, para siempre. 💍";
+                const finalParagraph = document.createElement("p");
+                finalParagraph.innerText = finalMessage;
+                finalParagraph.style.animation = "fadeIn 2s";
+                finalParagraph.style.fontSize = "1.5em"; // Hacer el último mensaje más grande y destacado
+                message.appendChild(finalParagraph);
+                clearInterval(messageInterval);
+                return;
+            }
+
+            // Elegir mensaje aleatorio sin repetir
+            const randomIndex = Math.floor(Math.random() * extraMessages.length);
+            const randomMessage = extraMessages.splice(randomIndex, 1)[0];
+            const newParagraph = document.createElement("p");
+            newParagraph.innerText = randomMessage;
+            newParagraph.style.animation = "fadeIn 2s";
+            message.appendChild(newParagraph);
+        }
+
+        function launchConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDuration = Math.random() * 2 + 3 + 's';
+                confetti.style.opacity = 1;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function showFloatingHearts() {
+            heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerText = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.opacity = 1;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 500); // Crear un nuevo corazón cada 500 ms
+        }
+
+        function shakeElements() {
+            document.getElementById("title").style.animation = "shake 1s infinite";
+        }
+    </script>
+</body>
+</html>
